@@ -113,7 +113,7 @@ public class BrowserClient extends WebViewClient {
             return false;
         } else {
             Matcher matcher = invalidUrlPattern.matcher(url);
-            return matcher.lookingAt();
+            return !matcher.lookingAt();
         }
     }
 }

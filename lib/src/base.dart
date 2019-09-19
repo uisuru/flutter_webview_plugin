@@ -112,7 +112,7 @@ class FlutterWebviewPlugin {
   ///     allowing only itself to be read.
   /// - [scrollBar]: enable or disable scrollbar
   /// - [supportMultipleWindows] enable multiple windows support in Android
-  /// - [invalidUrlRegex] is the regular expression of URLs that web view shouldn't load.
+  /// - [invalidUrlRegex] is the regular expression of URLs that web view should load.
   /// For example, when webview is redirected to a specific URL, you want to intercept
   /// this process by stopping loading this URL and replacing webview by another screen.
   ///   Android only settings:
