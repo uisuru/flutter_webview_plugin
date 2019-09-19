@@ -21,6 +21,7 @@ import androidx.core.content.FileProvider;
 import android.database.Cursor;
 import android.provider.OpenableColumns;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 import java.util.List;
 import java.util.ArrayList;
