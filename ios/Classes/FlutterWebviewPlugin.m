@@ -292,7 +292,7 @@ static NSString *const CHANNEL_NAME = @"flutter_webview_plugin";
     NSTextCheckingResult* match = [regex firstMatchInString:urlString
                                                     options:0
                                                       range:NSMakeRange(0, [urlString length])];
-    return match != nil;
+    return match == nil;
   } else {
     return false;
   }
