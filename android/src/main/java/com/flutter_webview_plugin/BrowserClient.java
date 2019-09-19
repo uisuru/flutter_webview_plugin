@@ -55,7 +55,12 @@ public class BrowserClient extends WebViewClient {
         data.put("url", url);
 
         FlutterWebviewPlugin.channel.invokeMethod("onUrlChanged", data);
-
+        String listenPostMessagesScript =
+                "if (!window.breezReceiveMessage) {" +
+                        "   window.breezReceiveMessage = function(event) {Android.getPostMessage(event.data);};" +
+                        "   window.addEventListener('message', window.breezReceiveMessage, false);" +
+                        "}";
+        view.evaluateJavascript(listenPostMessagesScript, null);
         data.put("type", "finishLoad");
         FlutterWebviewPlugin.channel.invokeMethod("onState", data);
 

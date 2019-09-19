@@ -20,6 +20,7 @@ import android.provider.MediaStore;
 import androidx.core.content.FileProvider;
 import android.database.Cursor;
 import android.provider.OpenableColumns;
+import android.graphics.Bitmap;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import java.io.File;
 import java.util.Date;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.io.ByteArrayOutputStream;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -326,6 +328,30 @@ class WebviewManager {
             });
         } else {
             CookieManager.getInstance().removeAllCookie();
+        }
+    }
+
+    void takeScreenshot(MethodCall call, MethodChannel.Result result){
+        if (webView != null) {
+            float scale = webView.getScale();
+            int height = (int) (webView.getContentHeight() * scale + 0.5);
+            Bitmap bitmap = Bitmap.createBitmap(webView.getWidth(), height, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            webView.draw(canvas);
+
+            // prevent IllegalArgumentException for createBitmap:
+            // y + height must be <= bitmap.height()
+            int scrollOffset = (webView.getScrollY() + webView.getMeasuredHeight() > bitmap.getHeight())
+                    ? bitmap.getHeight() : webView.getScrollY();
+            // Crop visible content
+            Bitmap resized = Bitmap.createBitmap(
+                    bitmap, 0, scrollOffset, bitmap.getWidth(), webView.getMeasuredHeight());
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            resized.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            resized.recycle();
+            result.success(byteArray);
         }
     }
 
